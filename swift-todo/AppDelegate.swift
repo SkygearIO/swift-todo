@@ -17,13 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        let splitViewController = self.window!.rootViewController as! UISplitViewController
-        let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
-        navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
-        splitViewController.delegate = self
         
+        // setup Skygear environment
         SKYContainer.defaultContainer().configAddress("https://your-endpoint.skygeario.com/") //Your server endpoint
         SKYContainer.defaultContainer().configureWithAPIKey("SKYGEAR_API_KEY") //Your Skygear API Key
+        
         SKYContainer.defaultContainer().delegate = self
         
         registerDevice()
@@ -71,6 +69,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     // MARK: - Split view
     
+    func setupSplitView(splitViewController: UISplitViewController) {
+        let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
+        navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
+        splitViewController.delegate = self
+    }
+    
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController:UIViewController, ontoPrimaryViewController primaryViewController:UIViewController) -> Bool {
         guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
         guard let topAsDetailController = secondaryAsNavController.topViewController as? DetailViewController else { return false }
@@ -82,6 +86,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
     
     // MARK: - Skygear
+    
+    func didLoggedin() {
+        loggedin = true
+        registerDevice()
+    }
     
     func registerDevice() {
         SKYContainer.defaultContainer().registerDeviceCompletionHandler { (deviceID, error) in
