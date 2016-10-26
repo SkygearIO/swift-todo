@@ -22,7 +22,7 @@ class LoginViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.updateLoginStatus()
     }
@@ -33,55 +33,55 @@ class LoginViewController: UIViewController {
     }
     
     func updateLoginStatus() {
-        if ((SKYContainer.defaultContainer().currentUserRecordID) != nil) {
+        if ((SKYContainer.default().currentUserRecordID) != nil) {
             loginStatusLabel.text = "Logged in"
-            loginButton.enabled = false
-            signupButton.enabled = false
-            logoutButton.enabled = true
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            loginButton.isEnabled = false
+            signupButton.isEnabled = false
+            logoutButton.isEnabled = true
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.didLoggedin()
-            self.performSegueWithIdentifier("loggedin", sender: nil)
+            self.performSegue(withIdentifier: "loggedin", sender: nil)
         } else {
             loginStatusLabel.text = "Not logged in"
-            loginButton.enabled = true
-            signupButton.enabled = true
-            logoutButton.enabled = false
+            loginButton.isEnabled = true
+            signupButton.isEnabled = true
+            logoutButton.isEnabled = false
         }
     }
     
-    func showAlert(error: NSError) {
-        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-        let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+    func showAlert(_ error: NSError) {
+        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(action)
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func didTapLogin(sender: AnyObject) {
-        SKYContainer.defaultContainer().loginWithUsername(usernameField.text, password: passwordField.text) { (user, error) in
+    @IBAction func didTapLogin(_ sender: AnyObject) {
+        SKYContainer.default().login(withUsername: usernameField.text, password: passwordField.text) { (user, error) in
             if (error != nil) {
-                self.showAlert(error)
+                self.showAlert(error as! NSError)
                 return
             }
-            NSLog("Logged in as: %@", user)
+            print("Logged in as: \(user)")
             self.updateLoginStatus()
         }
     }
     
-    @IBAction func didTapSignup(sender: AnyObject) {
-        SKYContainer.defaultContainer().signupWithUsername(usernameField.text, password: passwordField.text) { (user, error) in
+    @IBAction func didTapSignup(_ sender: AnyObject) {
+        SKYContainer.default().signup(withUsername: usernameField.text, password: passwordField.text) { (user, error) in
             if (error != nil) {
-                self.showAlert(error)
+                self.showAlert(error as! NSError)
                 return
             }
-            NSLog("Signed up as: %@", user)
+            print("Signed up as: \(user)")
             self.updateLoginStatus()
         }
     }
     
-    @IBAction func didTapLogout(sender: AnyObject) {
-        SKYContainer.defaultContainer().logoutWithCompletionHandler { (user, error) in
+    @IBAction func didTapLogout(_ sender: AnyObject) {
+        SKYContainer.default().logout { (user, error) in
             if (error != nil) {
-                self.showAlert(error)
+                self.showAlert(error as! NSError)
                 return
             }
             NSLog("Logged out")

@@ -25,7 +25,7 @@ class DetailViewController: UIViewController {
         // Update the user interface for the detail item.
         if let detail = self.detailItem as? SKYRecord {
             if let label = self.detailDescriptionLabel {
-                label.text = detail.objectForKey("title") as? String
+                label.text = detail.object(forKey: "title") as? String
             }
         }
     }

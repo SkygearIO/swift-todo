@@ -12,7 +12,7 @@ class SplitViewController: UISplitViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.setupSplitView(self)
     }
 }
