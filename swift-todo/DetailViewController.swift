@@ -25,7 +25,7 @@ class DetailViewController: UIViewController {
         // Update the user interface for the detail item.
         if let detail = self.detailItem as? SKYRecord {
             if let label = self.detailDescriptionLabel {
-                label.text = detail.objectForKey("title") as? String
+                label.text = detail.object(forKey: "title") as? String
             }
         }
     }
@@ -41,29 +41,29 @@ class DetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func edit(sender: AnyObject) {
-        let alertController = UIAlertController(title: "Edit title", message: nil, preferredStyle: .Alert)
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-        alertController.addAction(UIAlertAction(title: "Confirm", style: .Default, handler: { (action) in
+    @IBAction func edit(_ sender: AnyObject) {
+        let alertController = UIAlertController(title: "Edit title", message: nil, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (action) in
             let title = alertController.textFields![0].text
             let todo = self.detailItem as! SKYRecord
-            todo.setObject(title!, forKey: "title")
+            todo.setObject(title!, forKey: "title" as NSCopying!)
             
-            SKYContainer.defaultContainer().privateCloudDatabase.saveRecord(todo, completion: { (record, error) in
+            SKYContainer.default().privateCloudDatabase.save(todo, completion: { (record, error) in
                 if (error != nil) {
                     print("error saving todo: \(error)")
                     return
                 }
                 
-                self.detailDescriptionLabel.text = todo.objectForKey("title") as? String
+                self.detailDescriptionLabel.text = todo.object(forKey: "title") as? String
             })
         }))
-        alertController.addTextFieldWithConfigurationHandler { (textField) in
+        alertController.addTextField { (textField) in
             let todo = self.detailItem as! SKYRecord
             textField.placeholder = "Title"
-            textField.text = todo.objectForKey("title") as? String
+            textField.text = todo.object(forKey: "title") as? String
         }
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
 
 }

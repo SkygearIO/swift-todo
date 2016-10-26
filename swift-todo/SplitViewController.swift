@@ -9,12 +9,12 @@
 import UIKit
 
 class SplitViewController: UISplitViewController {
-    override func viewDidAppear(animated: Bool) {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    override func viewDidAppear(_ animated: Bool) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         if !appDelegate.loggedin {
-            let loginView = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LoginViewController")
-            self.presentViewController(loginView, animated: true, completion: nil)
+            let loginView = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
+            self.present(loginView, animated: true, completion: nil)
         }
     }
 }
