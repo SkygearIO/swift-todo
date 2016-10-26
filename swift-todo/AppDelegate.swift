@@ -105,9 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                     print(operationError)
                 }
             }
-        };
-        
-        
+        }
         SKYContainer.default().privateCloudDatabase.execute(operation)
     }
     

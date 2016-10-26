@@ -140,8 +140,6 @@ class MasterViewController: UITableViewController {
                 self.objects.remove(at: (indexPath as NSIndexPath).row) as! SKYRecord
                 tableView.deleteRows(at: [indexPath], with: .fade)
             })
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }
     }
 
